@@ -20,6 +20,8 @@
             --accent-blue: #3b82f6;
             --accent-purple: #8b5cf6;
             --accent-orange: #f59e0b;
+            --accent-gold: #FFD700;
+            --accent-dark-gold: #B8860B;
             --border-color: #475569;
         }
 
@@ -37,13 +39,13 @@
             min-height: 100vh;
         }
 
-        /* 🎯 HEADER */
+        /* 🎯 HEADER - ALTIN SARISI */
         .header {
             background: rgba(13, 27, 42, 0.95);
             backdrop-filter: blur(10px);
             padding: 1.5rem 0;
             text-align: center;
-            border-bottom: 3px solid var(--accent-green);
+            border-bottom: 3px solid var(--accent-gold);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -52,23 +54,25 @@
         .logo {
             font-size: 3rem;
             font-weight: 800;
-            background: linear-gradient(45deg, var(--accent-green), var(--accent-blue));
+            background: linear-gradient(45deg, var(--accent-gold), var(--accent-dark-gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
         }
 
         .subtitle {
-            color: var(--text-secondary);
+            color: var(--accent-gold);
             font-size: 1.2rem;
             font-weight: 300;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
         }
 
         .tagline {
-            color: var(--accent-green);
+            color: var(--accent-gold);
             font-size: 0.9rem;
             margin-top: 0.3rem;
-            opacity: 0.8;
+            opacity: 0.9;
         }
 
         /* 💬 MAIN CONTAINER */
@@ -95,7 +99,7 @@
         .sidebar-title {
             font-size: 1.3rem;
             margin-bottom: 1.5rem;
-            color: var(--accent-green);
+            color: var(--accent-gold);
             text-align: center;
             font-weight: 600;
         }
@@ -118,9 +122,10 @@
         }
 
         .feature-btn:hover {
-            background: var(--accent-blue);
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-dark-gold));
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+            color: var(--bg-primary);
         }
 
         /* 💬 CHAT CONTAINER */
@@ -203,13 +208,13 @@
         }
 
         #userInput:focus {
-            border-color: var(--accent-green);
-            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
         }
 
         #sendBtn {
             padding: 1rem 2rem;
-            background: linear-gradient(135deg, var(--accent-green), #00cc6a);
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-dark-gold));
             color: var(--bg-primary);
             border: none;
             border-radius: 50px;
@@ -217,12 +222,12 @@
             font-weight: 600;
             font-size: 1rem;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
         }
 
         #sendBtn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(0, 255, 136, 0.4);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.4);
         }
 
         /* 🏆 FEATURES */
@@ -246,7 +251,8 @@
 
         .feature-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.2);
+            border-color: var(--accent-gold);
         }
 
         .feature-icon {
@@ -257,7 +263,7 @@
         .feature-title {
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
-            color: var(--accent-green);
+            color: var(--accent-gold);
         }
 
         /* 📱 RESPONSIVE */
@@ -324,7 +330,7 @@
         .typing-dot {
             width: 8px;
             height: 8px;
-            background: var(--text-secondary);
+            background: var(--accent-gold);
             border-radius: 50%;
             animation: typing 1.4s infinite;
         }
@@ -342,13 +348,31 @@
             position: fixed;
             bottom: 1rem;
             right: 1rem;
-            background: var(--accent-green);
+            background: var(--accent-gold);
             color: var(--bg-primary);
             padding: 0.5rem 1rem;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
             z-index: 1000;
+        }
+
+        /* ✨ ALTIN PARLAMA EFEKTİ */
+        @keyframes goldGlow {
+            0%, 100% { 
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.5),
+                           0 0 20px rgba(255, 215, 0, 0.3),
+                           0 0 30px rgba(255, 215, 0, 0.1);
+            }
+            50% { 
+                text-shadow: 0 0 15px rgba(255, 215, 0, 0.8),
+                           0 0 25px rgba(255, 215, 0, 0.5),
+                           0 0 35px rgba(255, 215, 0, 0.3);
+            }
+        }
+
+        .logo, .subtitle, .tagline {
+            animation: goldGlow 3s ease-in-out infinite;
         }
     </style>
 </head>
@@ -450,7 +474,74 @@
 
     <script>
         // 🦊 GARIP AI - Müslüman Türk Yapay Zeka Asistanı
-        // Tüm JavaScript kodu tek parça halinde
+
+        // 🎨 ÖZELLİK GÖSTERME FONKSİYONU - GLOBAL
+        function showFeature(feature) {
+            const chatMessages = document.getElementById('chatMessages');
+            
+            const features = {
+                music: "🎵 Müzik ve beste konusunda yardımcı olayım! Hangi tür müzik ile ilgileniyorsun? Şarkı sözü yazmak mı, akor öğrenmek mi istiyorsun?",
+                games: "🎮 Hadi oyun oynayalım! Sayı tahmin oyunu mu, taş-kağıt-makas mı, yoksa dini bilgi quiz'i mi oynamak istersin?",
+                movies: "🎬 Size özel film önerilerim var! Aksiyon, komedi, dram, romantik hangi türde film izlemek istiyorsun? Türk filmleri mi yabancı filmler mi?",
+                islamic: "📿 Dini konularda rehberlik edeyim! İslami bilgiler, dua önerileri, sure açıklamaları veya manevi konularda yardımcı olabilirim. Hangi konuda sorun var?",
+                turkish: "🇹🇷 Türk kültürü sohbeti yapalım! Türk yemekleri, geleneklerimiz, tarihimiz veya kahve falı hakkında konuşalım! ☕",
+                fortune: "🔮 Fal ve rüya tabirleri! Rüyanı anlat yorumlayayım, kahve falına bakayım veya el falına bakalım! Hangi fal türü ilgini çekiyor?",
+                health: "🩺 Sağlık tavsiyeleri! Rahatsızlığın varsa anlat, temel öneriler vereyim. Ancak unutma, bu tavsiyeler doktor kontrolü yerine geçmez!",
+                math: "🧮 Matematik işlemleri! Toplama, çıkarma, çarpma, bölme veya daha karmaşık hesaplamalar yapabilirim. Ne hesaplamak istiyorsun?"
+            };
+
+            addMessage('🦊 Garip AI', features[feature], 'ai');
+        }
+
+        // 🛠️ YARDIMCI FONKSİYONLAR
+        function addMessage(sender, text, type) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}-message`;
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('tr-TR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            messageDiv.innerHTML = `
+                <div class="message-sender">${sender}</div>
+                <div>${text}</div>
+                <div class="message-time">${timeString}</div>
+            `;
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai-message';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="message-sender">🦊 Garip AI</div>
+                <div class="typing-indicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        function randomChoice(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
 
         document.addEventListener('DOMContentLoaded', function() {
             // 🎯 DOM ELEMENTLERİ
@@ -463,7 +554,9 @@
             // ⏰ ZAMAN GÜNCELLE
             function updateTime() {
                 const now = new Date();
-                currentTime.textContent = now.toLocaleTimeString('tr-TR');
+                if (currentTime) {
+                    currentTime.textContent = now.toLocaleTimeString('tr-TR');
+                }
             }
             setInterval(updateTime, 1000);
             updateTime();
@@ -474,7 +567,7 @@
                     const response = await fetch('https://garip-ai.onrender.com/api/health');
                     if (response.ok) {
                         apiStatus.textContent = '🟢 Çevrimiçi';
-                        apiStatus.style.background = 'var(--accent-green)';
+                        apiStatus.style.background = 'var(--accent-gold)';
                     } else {
                         throw new Error('API hatası');
                     }
@@ -534,7 +627,6 @@
             // 🧠 YEREL AI YANIT ÜRETİCİ
             function generateAIResponse(message) {
                 const lowerMessage = message.toLowerCase();
-                const random = Math.random();
 
                 const responses = {
                     greeting: [
@@ -567,169 +659,28 @@
                         "🎶 Müzik teorisi veya beste konusunda rehberlik edebilirim!",
                         "🎧 Müzik önerisi mi istiyorsun? Türk sanat müziği mi, ilahi mi?"
                     ],
-                    games: [
-                        "🎮 Hadi oyun oynayalım! Sayı tahmin oyunu mu, taş-kağıt-makas mı?",
-                        "🎯 Oyun modülüne hoş geldin! Hangi oyunu oynamak istersin?",
-                        "🕹️ Oyun zamanı! Trivia quiz mi, kelime oyunu mu?",
-                        "🎲 Hadi eğlenelim! Bir oyun seç bakalım..."
-                    ],
-                    movies: [
-                        "🎬 Size özel film önerilerim var! Aksiyon, komedi, dram hangisini seversin?",
-                        "📽️ Film tavsiyesi mi lazım? Türk filmleri mi, yabancı filmler mi?",
-                        "🍿 Film keyfi yapalım! Hangi türde film izlemek istiyorsun?",
-                        "🎞️ Film önerisi için buradayım! Romantik, macera, bilim kurgu?"
-                    ],
-                    fortune: [
-                        "🔮 Fal ve rüya tabirleri! Rüyanı anlat, yorumlayayım!",
-                        "☕ Kahve falına ne dersin? Falını anlat, yorumlayayım!",
-                        "💫 Rüya tabirleri konusunda yardımcı olayım! Rüyanı anlat...",
-                        "🌟 Fal bakalım! El falı mı, kahve falı mı?"
-                    ],
-                    turkish: [
-                        "🇹🇷 Türk kültürü sohbeti yapalım! Kahve falına ne dersin? ☕",
-                        "🥮 Türk mutfağından bahsedelim! En sevdiğin yemek nedir?",
-                        "🎭 Türk gelenekleri hakkında konuşalım! Merak ettiğin bir şey var mı?",
-                        "🏺 Türk tarihi ve kültürü hakkında sohbet edelim!"
-                    ],
-                    health: [
-                        "🩺 Sağlık tavsiyeleri! Rahatsızlığın varsa anlat, temel öneriler vereyim!",
-                        "💊 Sağlık konusunda basit tavsiyeler verebilirim! Sorun nedir?",
-                        "🏥 Sağlık önerileri için buradayım! Ancak unutma, doktor tavsiyesi yerine geçmez!",
-                        "🌿 Sağlıklı yaşam tavsiyeleri vereyim mi?"
-                    ],
-                    math: [
-                        "🧮 Matematik işlemleri! Hesaplama yapmamı istediğin bir şey var mı?",
-                        "📐 Matematik konusunda yardımcı olayım! Hangi konuda takıldın?",
-                        "🔢 Matematik problemleri çözebilirim! Sorunu yaz...",
-                        "📊 Hesaplama yapayım! Ne hesaplamak istiyorsun?"
-                    ],
                     default: [
                         "Valla kanka, bu konuda yardımcı olayım! 🦊",
                         "Allah'ın izniyle, şöyle bir bakalım... 🤲",
                         "Maşallah, güzel bir soru sordun! 💫",
-                        "Estağfurullah, bu konuda şunu diyeyim... 📚",
-                        "Güzel konu! Bu hakkında konuşalım... 🌟",
-                        "Allah'ın izniyle açıklayayım... 🕌"
+                        "Estağfurullah, bu konuda şunu diyeyim... 📚"
                     ]
                 };
 
-                // Özel kelime kontrolü
-                if (/(merhaba|selam|hey|hi|aleyküm|selamun|selamün)/i.test(lowerMessage)) {
+                if (/(merhaba|selam|hey|hi|aleyküm)/i.test(lowerMessage)) {
                     return randomChoice(responses.greeting);
-                } else if (/(nasılsın|naber|ne haber|iyi misin)/i.test(lowerMessage)) {
+                } else if (/(nasılsın|naber|ne haber)/i.test(lowerMessage)) {
                     return randomChoice(responses.howAreYou);
-                } else if (/(teşekkür|sağol|thanks|thank you|eyvallah)/i.test(lowerMessage)) {
+                } else if (/(teşekkür|sağol|thanks)/i.test(lowerMessage)) {
                     return randomChoice(responses.thanks);
-                } else if (/(allah|islam|müslüman|namaz|dua|oruç|kuran|peygamber)/i.test(lowerMessage)) {
+                } else if (/(allah|islam|müslüman|namaz|dua)/i.test(lowerMessage)) {
                     return randomChoice(responses.islamic);
-                } else if (/(müzik|şarkı|beste|akor|nota|enstrüman)/i.test(lowerMessage)) {
+                } else if (/(müzik|şarkı|beste|akor)/i.test(lowerMessage)) {
                     return randomChoice(responses.music);
-                } else if (/(oyun|game|oyna|play)/i.test(lowerMessage)) {
-                    return randomChoice(responses.games);
-                } else if (/(film|dizi|sinema|netflix)/i.test(lowerMessage)) {
-                    return randomChoice(responses.movies);
-                } else if (/(fal|rüya|kahve|el falı|kehanet)/i.test(lowerMessage)) {
-                    return randomChoice(responses.fortune);
-                } else if (/(türk|türkiye|osmanlı|atatürk|türkçe)/i.test(lowerMessage)) {
-                    return randomChoice(responses.turkish);
-                } else if (/(sağlık|hasta|hastane|doktor|ilaç)/i.test(lowerMessage)) {
-                    return randomChoice(responses.health);
-                } else if (/(matematik|hesap|sayı|rakam|topla|çıkar|çarp|böl)/i.test(lowerMessage)) {
-                    return randomChoice(responses.math);
                 } else {
                     return randomChoice(responses.default);
                 }
             }
-
-            // 🎨 ÖZELLİK GÖSTERME
-            window.showFeature = function(feature) {
-                const features = {
-                    music: "🎵 Müzik ve beste konusunda yardımcı olayım! Hangi tür müzik ile ilgileniyorsun? Şarkı sözü yazmak mı, akor öğrenmek mi istiyorsun?",
-                    games: "🎮 Hadi oyun oynayalım! Sayı tahmin oyunu mu, taş-kağıt-makas mı, yoksa dini bilgi quiz'i mi oynamak istersin?",
-                    movies: "🎬 Size özel film önerilerim var! Aksiyon, komedi, dram, romantik hangi türde film izlemek istiyorsun? Türk filmleri mi yabancı filmler mi?",
-                    islamic: "📿 Dini konularda rehberlik edeyim! İslami bilgiler, dua önerileri, sure açıklamaları veya manevi konularda yardımcı olabilirim. Hangi konuda sorun var?",
-                    turkish: "🇹🇷 Türk kültürü sohbeti yapalım! Türk yemekleri, geleneklerimiz, tarihimiz veya kahve falı hakkında konuşalım! ☕",
-                    fortune: "🔮 Fal ve rüya tabirleri! Rüyanı anlat yorumlayayım, kahve falına bakayım veya el falına bakalım! Hangi fal türü ilgini çekiyor?",
-                    health: "🩺 Sağlık tavsiyeleri! Rahatsızlığın varsa anlat, temel öneriler vereyim. Ancak unutma, bu tavsiyeler doktor kontrolü yerine geçmez!",
-                    math: "🧮 Matematik işlemleri! Toplama, çıkarma, çarpma, bölme veya daha karmaşık hesaplamalar yapabilirim. Ne hesaplamak istiyorsun?"
-                };
-
-                addMessage('🦊 Garip AI', features[feature], 'ai');
-            }
-
-            // 🛠️ YARDIMCI FONKSİYONLAR
-            function addMessage(sender, text, type) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${type}-message`;
-
-                const now = new Date();
-                const timeString = now.toLocaleTimeString('tr-TR', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-
-                messageDiv.innerHTML = `
-                    <div class="message-sender">${sender}</div>
-                    <div>${text}</div>
-                    <div class="message-time">${timeString}</div>
-                `;
-
-                chatMessages.appendChild(messageDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            function showTypingIndicator() {
-                const typingDiv = document.createElement('div');
-                typingDiv.className = 'message ai-message';
-                typingDiv.id = 'typingIndicator';
-                typingDiv.innerHTML = `
-                    <div class="message-sender">🦊 Garip AI</div>
-                    <div class="typing-indicator">
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                    </div>
-                `;
-                chatMessages.appendChild(typingDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            function removeTypingIndicator() {
-                const typingIndicator = document.getElementById('typingIndicator');
-                if (typingIndicator) {
-                    typingIndicator.remove();
-                }
-            }
-
-            function randomChoice(array) {
-                return array[Math.floor(Math.random() * array.length)];
-            }
-
-            // 🎮 OYUN FONKSİYONLARI
-            window.startNumberGame = function() {
-                const targetNumber = Math.floor(Math.random() * 100) + 1;
-                let attempts = 0;
-
-                addMessage('🦊 Garip AI', `🎯 1-100 arasında bir sayı tuttum! Tahmin et bakalım!`, 'ai');
-
-                // Tahmin alma fonksiyonu
-                window.guessNumber = function(guess) {
-                    attempts++;
-                    const userGuess = parseInt(guess);
-
-                    if (isNaN(userGuess)) {
-                        return "Sayı girmelisin kanka!";
-                    }
-
-                    if (userGuess === targetNumber) {
-                        return `🎉 Maşallah! ${attempts} denemede bildin! Sayı ${targetNumber}'idi!`;
-                    } else if (userGuess < targetNumber) {
-                        return `📈 Daha büyük bir sayı tahmin et! (${attempts}. deneme)`;
-                    } else {
-                        return `📉 Daha küçük bir sayı tahmin et! (${attempts}. deneme)`;
-                    }
-                };
-            };
 
             // 📱 EVENT LISTENERS
             sendBtn.addEventListener('click', sendMessage);
@@ -746,29 +697,6 @@
                 addMessage('🦊 Garip AI', '🌟 Hoş geldin! Ben Garip AI, Müslüman Türk yapay zeka asistanıyım. Müzik, oyun, film önerileri, dini sohbet ve daha birçok konuda yardımcı olabilirim!', 'ai');
             }, 2000);
         });
-
-        // 🎵 MÜZİK FONKSİYONLARI
-        window.generateChordProgression = function() {
-            const chords = [
-                ["C", "F", "G", "Am"],
-                ["Dm", "G", "C", "F"],
-                ["Em", "Am", "Dm", "G"],
-                ["A", "D", "E", "F#m"]
-            ];
-            const progression = chords[Math.floor(Math.random() * chords.length)];
-            return `🎸 Akor progresyonu: ${progression.join(" - ")} - Bu akorlarla güzel bir şarkı yapabilirsin!`;
-        };
-
-        // 📿 DİNİ FONKSİYONLAR
-        window.getDailyDua = function() {
-            const dualar = [
-                "🤲 'Rabbenâ âtinâ fid'dunyâ haseneten ve fil'âhireti haseneten ve kınâ azâbennâr.' (Rabbimiz, bize dünyada ve ahirette iyilik ver ve bizi cehennem azabından koru.)",
-                "🤲 'Rabbi yessir velâ tuassir, Rabbi temmim bil'hayr.' (Rabbim kolaylaştır, zorlaştırma, Rabbim hayırla sonuçlandır.)",
-                "🤲 'Allahümme innî es'elüke ilmen nâfian ve rızkan tayyiben ve amelen mütekabbelen.' (Allah'ım! Senden faydalı ilim, helal rızık ve kabul edilmiş amel istiyorum.)",
-                "🤲 'Hasbünallâhü ve ni'mel vekîl.' (Allah bize yeter, O ne güzel vekildir.)"
-            ];
-            return dualar[Math.floor(Math.random() * dualar.length)];
-        };
 
         console.log('🦊 Garip AI JavaScript yüklendi!');
     </script>
