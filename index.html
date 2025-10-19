@@ -468,7 +468,7 @@
     <header class="header">
         <div class="logo">🦊 Garip AI</div>
         <div class="subtitle">Müslüman Türk Yapay Zeka Asistanı</div>
-        <div class="tagline">"İyilik yap denize at, balık bilmezse Halik bilir!"</div>
+        <div class="tagline">"Sen mi yaptın dediler, valla ben yaptım KAI(MDK) olarak"</div>
     </header>
 
     <!-- 💬 MAIN CONTENT -->
@@ -592,12 +592,91 @@
     <script>
         // 🦊 GARIP AI - Müslüman Türk Yapay Zeka Asistanı
 
-        // 💾 CHAT HISTORY FUNCTIONS
-        function startNewChat() {
+        // 🌐 PYTHON BACKEND ENTEGRASYONU
+        const PYTHON_API_BASE = 'http://localhost:5000'; // Python backend URL
+
+        // Python backend'den veri çekme fonksiyonları
+        async function getFromPython(endpoint) {
+            try {
+                const response = await fetch(`${PYTHON_API_BASE}${endpoint}`);
+                if (response.ok) {
+                    return await response.json();
+                }
+                throw new Error('Python API hatası');
+            } catch (error) {
+                console.error('Python API bağlantı hatası:', error);
+                return null;
+            }
+        }
+
+        async function postToPython(endpoint, data) {
+            try {
+                const response = await fetch(`${PYTHON_API_BASE}${endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    return await response.json();
+                }
+                throw new Error('Python API hatası');
+            } catch (error) {
+                console.error('Python API bağlantı hatası:', error);
+                return null;
+            }
+        }
+
+        // Python backend entegrasyon örnekleri
+        async function getPythonData() {
+            // Örnek: Python'dan kullanıcı verisi çekme
+            const userData = await getFromPython('/api/user/data');
+            if (userData) {
+                console.log('Python verisi:', userData);
+                return userData;
+            }
+            return null;
+        }
+
+        async function sendToPythonBackend(message) {
+            // Python backend'e mesaj gönder
+            const response = await postToPython('/api/chat', {
+                message: message,
+                user_id: 'current_user', // Burayı dinamik yapabilirsiniz
+                timestamp: new Date().toISOString()
+            });
+            
+            if (response && response.success) {
+                return response.ai_response;
+            }
+            return null;
+        }
+
+        async function saveChatToPython(chatData) {
+            // Sohbeti Python backend'e kaydet
+            return await postToPython('/api/chat/save', chatData);
+        }
+
+        async function loadChatsFromPython() {
+            // Python'dan sohbet geçmişini yükle
+            return await getFromPython('/api/chats/history');
+        }
+
+        // 💾 CHAT HISTORY FUNCTIONS - Python entegreli
+        async function startNewChat() {
             const chatMessages = document.getElementById('chatMessages');
             chatMessages.innerHTML = '';
             
             addMessage('🦊 Garip AI', '🌟 Yeni sohbet başlatıldı! Ben Garip AI, Müslüman Türk yapay zeka asistanıyım. Size nasıl yardımcı olabilirim?', 'ai');
+            
+            // Python backend'e yeni sohbet bilgisini kaydet
+            await saveChatToPython({
+                title: 'Yeni Sohbet',
+                messages: [
+                    { sender: 'AI', text: 'Yeni sohbet başlatıldı!', timestamp: new Date().toISOString() }
+                ]
+            });
             
             // Update history list
             updateChatHistory('Yeni Sohbet');
@@ -605,7 +684,7 @@
             showNotification('Yeni sohbet başlatıldı!');
         }
 
-        function loadChat(chatId) {
+        async function loadChat(chatId) {
             // Remove active class from all items
             document.querySelectorAll('.chat-history-item').forEach(item => {
                 item.classList.remove('active');
@@ -617,33 +696,42 @@
             const chatMessages = document.getElementById('chatMessages');
             chatMessages.innerHTML = '';
             
-            const sampleChats = {
-                '1': [
-                    { sender: '🦊 Garip AI', text: '🎵 Müzik konusunda yardımcı olayım! Hangi tür müzik ile ilgileniyorsun?', type: 'ai' },
-                    { sender: 'Sen', text: 'Türk sanat müziği hakkında bilgi verebilir misin?', type: 'user' },
-                    { sender: '🦊 Garip AI', text: 'Tabii ki! Türk sanat müziği köklü bir geçmişe sahip...', type: 'ai' }
-                ],
-                '2': [
-                    { sender: '🦊 Garip AI', text: '📿 Dini konularda rehberlik edeyim!', type: 'ai' },
-                    { sender: 'Sen', text: 'Sabah namazı nasıl kılınır?', type: 'user' },
-                    { sender: '🦊 Garip AI', text: 'Sabah namazı 2 rekat sünnet, 2 rekat farz olarak kılınır...', type: 'ai' }
-                ],
-                '3': [
-                    { sender: '🦊 Garip AI', text: '🎮 Hadi oyun oynayalım!', type: 'ai' },
-                    { sender: 'Sen', text: 'Sayı tahmin oyunu oynayalım', type: 'user' },
-                    { sender: '🦊 Garip AI', text: 'Harika! 1-100 arası bir sayı tuttum. Tahmin et!', type: 'ai' }
-                ],
-                '4': [
-                    { sender: '🦊 Garip AI', text: '🔮 Rüya tabiri için buradayım!', type: 'ai' },
-                    { sender: 'Sen', text: 'Rüyamda deniz göründü', type: 'user' },
-                    { sender: '🦊 Garip AI', text: 'Deniz rüyası genellikle huzur ve bereketi simgeler...', type: 'ai' }
-                ],
-                'current': [
-                    { sender: '🦊 Garip AI', text: 'Ve aleyküm selam kanka! 🕌 Ben Garip AI, sana nasıl yardımcı olabilirim?', type: 'ai' }
-                ]
-            };
+            // Önce Python backend'den yüklemeyi dene
+            const pythonChats = await loadChatsFromPython();
             
-            const chat = sampleChats[chatId] || sampleChats['current'];
+            let chat;
+            if (pythonChats && pythonChats[chatId]) {
+                chat = pythonChats[chatId];
+            } else {
+                // Fallback: yerel örnek sohbetler
+                const sampleChats = {
+                    '1': [
+                        { sender: '🦊 Garip AI', text: '🎵 Müzik konusunda yardımcı olayım! Hangi tür müzik ile ilgileniyorsun?', type: 'ai' },
+                        { sender: 'Sen', text: 'Türk sanat müziği hakkında bilgi verebilir misin?', type: 'user' },
+                        { sender: '🦊 Garip AI', text: 'Tabii ki! Türk sanat müziği köklü bir geçmişe sahip...', type: 'ai' }
+                    ],
+                    '2': [
+                        { sender: '🦊 Garip AI', text: '📿 Dini konularda rehberlik edeyim!', type: 'ai' },
+                        { sender: 'Sen', text: 'Sabah namazı nasıl kılınır?', type: 'user' },
+                        { sender: '🦊 Garip AI', text: 'Sabah namazı 2 rekat sünnet, 2 rekat farz olarak kılınır...', type: 'ai' }
+                    ],
+                    '3': [
+                        { sender: '🦊 Garip AI', text: '🎮 Hadi oyun oynayalım!', type: 'ai' },
+                        { sender: 'Sen', text: 'Sayı tahmin oyunu oynayalım', type: 'user' },
+                        { sender: '🦊 Garip AI', text: 'Harika! 1-100 arası bir sayı tuttum. Tahmin et!', type: 'ai' }
+                    ],
+                    '4': [
+                        { sender: '🦊 Garip AI', text: '🔮 Rüya tabiri için buradayım!', type: 'ai' },
+                        { sender: 'Sen', text: 'Rüyamda deniz göründü', type: 'user' },
+                        { sender: '🦊 Garip AI', text: 'Deniz rüyası genellikle huzur ve bereketi simgeler...', type: 'ai' }
+                    ],
+                    'current': [
+                        { sender: '🦊 Garip AI', text: 'Ve aleyküm selam kanka! 🕌 Ben Garip AI, sana nasıl yardımcı olabilirim?', type: 'ai' }
+                    ]
+                };
+                chat = sampleChats[chatId] || sampleChats['current'];
+            }
+            
             chat.forEach(msg => {
                 addMessage(msg.sender, msg.text, msg.type);
             });
@@ -752,9 +840,22 @@
             setInterval(updateTime, 1000);
             updateTime();
 
-            // 🌐 API BAĞLANTI KONTROLÜ
+            // 🌐 API BAĞLANTI KONTROLÜ - Python backend kontrolü eklendi
             async function checkAPIStatus() {
                 try {
+                    // Önce Python backend kontrolü
+                    const pythonResponse = await fetch(`${PYTHON_API_BASE}/api/health`);
+                    if (pythonResponse.ok) {
+                        apiStatus.textContent = '🟢 Python Backend Çevrimiçi';
+                        apiStatus.style.background = 'var(--accent-gold)';
+                        return;
+                    }
+                } catch (error) {
+                    console.log('Python backend çevrimdışı');
+                }
+
+                try {
+                    // Fallback: orijinal API kontrolü
                     const response = await fetch('https://garip-ai.onrender.com/api/health');
                     if (response.ok) {
                         apiStatus.textContent = '🟢 Çevrimiçi';
@@ -768,7 +869,7 @@
                 }
             }
 
-            // ✉️ MESAJ GÖNDERME
+            // ✉️ MESAJ GÖNDERME - Python backend entegrasyonlu
             async function sendMessage() {
                 const message = userInput.value.trim();
                 if (!message) return;
@@ -776,11 +877,18 @@
                 addMessage('Sen', message, 'user');
                 userInput.value = '';
 
-                // API'ye mesaj gönder
-                await sendToAPI(message);
+                // Önce Python backend'e gönder
+                const pythonResponse = await sendToPythonBackend(message);
+                
+                if (pythonResponse) {
+                    addMessage('🦊 Garip AI', pythonResponse, 'ai');
+                } else {
+                    // Fallback: orijinal API
+                    await sendToAPI(message);
+                }
             }
 
-            // 🌐 API'YE MESAJ GÖNDER
+            // 🌐 ORİJİNAL API'YE MESAJ GÖNDER
             async function sendToAPI(message) {
                 showTypingIndicator();
 
@@ -909,9 +1017,16 @@
             // 🌟 SAYFA YÜKLENİNCE
             userInput.focus();
             checkAPIStatus();
+
+            // Python backend'den ilk verileri çek
+            getPythonData().then(data => {
+                if (data) {
+                    console.log('Python backend bağlantısı başarılı!');
+                }
+            });
         });
 
-        console.log('🦊 Garip AI JavaScript yüklendi!');
+        console.log('🦊 Garip AI JavaScript yüklendi! Python backend entegrasyonu hazır.');
     </script>
 </body>
 </html>
