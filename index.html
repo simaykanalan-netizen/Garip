@@ -81,90 +81,12 @@
             margin: 0 auto;
             padding: 2rem;
             display: grid;
-            grid-template-columns: 280px 300px 1fr;
+            grid-template-columns: 300px 1fr 280px;
             gap: 1.5rem;
             min-height: calc(100vh - 200px);
         }
 
-        /* 💾 CHAT HISTORY SIDEBAR */
-        .chat-history-sidebar {
-            background: var(--bg-secondary);
-            border-radius: 20px;
-            padding: 1.5rem;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-            height: 600px;
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .history-title {
-            font-size: 1.2rem;
-            color: var(--accent-gold);
-            font-weight: 600;
-        }
-
-        .new-chat-btn {
-            background: linear-gradient(135deg, var(--accent-gold), var(--accent-dark-gold));
-            color: var(--bg-primary);
-            border: none;
-            padding: 0.6rem 1rem;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .new-chat-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
-        }
-
-        .chat-history-list {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .chat-history-item {
-            background: var(--bg-card);
-            padding: 1rem;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-
-        .chat-history-item:hover {
-            background: linear-gradient(135deg, var(--accent-gold), var(--accent-dark-gold));
-            color: var(--bg-primary);
-            transform: translateX(5px);
-        }
-
-        .chat-history-item.active {
-            background: linear-gradient(135deg, var(--accent-gold), var(--accent-dark-gold));
-            color: var(--bg-primary);
-            border-color: var(--accent-gold);
-        }
-
-        .chat-date {
-            font-size: 0.8rem;
-            opacity: 0.7;
-            margin-top: 0.3rem;
-        }
-
-        /* 🎨 FEATURES SIDEBAR */
+        /* 🎨 FEATURES SIDEBAR - SOL */
         .sidebar {
             background: var(--bg-secondary);
             border-radius: 20px;
@@ -206,7 +128,7 @@
             color: var(--bg-primary);
         }
 
-        /* 💬 CHAT CONTAINER */
+        /* 💬 CHAT CONTAINER - ORTA */
         .chat-container {
             background: var(--bg-secondary);
             border-radius: 20px;
@@ -308,6 +230,84 @@
             box-shadow: 0 15px 30px rgba(255, 215, 0, 0.4);
         }
 
+        /* 💾 CHAT HISTORY SIDEBAR - SAĞ */
+        .chat-history-sidebar {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .history-title {
+            font-size: 1.2rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .new-chat-btn {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-dark-gold));
+            color: var(--bg-primary);
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .new-chat-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .chat-history-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .chat-history-item {
+            background: var(--bg-card);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .chat-history-item:hover {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-dark-gold));
+            color: var(--bg-primary);
+            transform: translateX(-5px);
+        }
+
+        .chat-history-item.active {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-dark-gold));
+            color: var(--bg-primary);
+            border-color: var(--accent-gold);
+        }
+
+        .chat-date {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 0.3rem;
+        }
+
         /* 🏆 FEATURES */
         .features-grid {
             display: grid;
@@ -347,7 +347,7 @@
         /* 📱 RESPONSIVE */
         @media (max-width: 1200px) {
             .main-container {
-                grid-template-columns: 250px 1fr;
+                grid-template-columns: 280px 1fr;
             }
             .chat-history-sidebar {
                 display: none;
@@ -473,37 +473,7 @@
 
     <!-- 💬 MAIN CONTENT -->
     <div class="main-container">
-        <!-- 💾 CHAT HISTORY SIDEBAR -->
-        <aside class="chat-history-sidebar">
-            <div class="history-header">
-                <div class="history-title">💬 Sohbet Geçmişi</div>
-                <button class="new-chat-btn" onclick="startNewChat()">+ Yeni</button>
-            </div>
-            <div class="chat-history-list" id="chatHistoryList">
-                <div class="chat-history-item active" onclick="loadChat('current')">
-                    <div>🦊 Mevcut Sohbet</div>
-                    <div class="chat-date">Şimdi</div>
-                </div>
-                <div class="chat-history-item" onclick="loadChat('1')">
-                    <div>🎵 Müzik Sohbeti</div>
-                    <div class="chat-date">2 saat önce</div>
-                </div>
-                <div class="chat-history-item" onclick="loadChat('2')">
-                    <div>📿 Dini Sohbet</div>
-                    <div class="chat-date">Dün</div>
-                </div>
-                <div class="chat-history-item" onclick="loadChat('3')">
-                    <div>🎮 Oyun Sohbeti</div>
-                    <div class="chat-date">3 gün önce</div>
-                </div>
-                <div class="chat-history-item" onclick="loadChat('4')">
-                    <div>🔮 Fal Yorumu</div>
-                    <div class="chat-date">1 hafta önce</div>
-                </div>
-            </div>
-        </aside>
-
-        <!-- 🎨 FEATURES SIDEBAR -->
+        <!-- 🎨 FEATURES SIDEBAR - SOL -->
         <aside class="sidebar">
             <h2 class="sidebar-title">🎯 Özellikler</h2>
 
@@ -540,7 +510,7 @@
             </button>
         </aside>
 
-        <!-- 💬 CHAT AREA -->
+        <!-- 💬 CHAT AREA - ORTA -->
         <main class="chat-container">
             <div class="chat-messages" id="chatMessages">
                 <div class="message ai-message">
@@ -557,6 +527,36 @@
                 </div>
             </div>
         </main>
+
+        <!-- 💾 CHAT HISTORY SIDEBAR - SAĞ -->
+        <aside class="chat-history-sidebar">
+            <div class="history-header">
+                <div class="history-title">💬 Sohbet Geçmişi</div>
+                <button class="new-chat-btn" onclick="startNewChat()">+ Yeni</button>
+            </div>
+            <div class="chat-history-list" id="chatHistoryList">
+                <div class="chat-history-item active" onclick="loadChat('current')">
+                    <div>🦊 Mevcut Sohbet</div>
+                    <div class="chat-date">Şimdi</div>
+                </div>
+                <div class="chat-history-item" onclick="loadChat('1')">
+                    <div>🎵 Müzik Sohbeti</div>
+                    <div class="chat-date">2 saat önce</div>
+                </div>
+                <div class="chat-history-item" onclick="loadChat('2')">
+                    <div>📿 Dini Sohbet</div>
+                    <div class="chat-date">Dün</div>
+                </div>
+                <div class="chat-history-item" onclick="loadChat('3')">
+                    <div>🎮 Oyun Sohbeti</div>
+                    <div class="chat-date">3 gün önce</div>
+                </div>
+                <div class="chat-history-item" onclick="loadChat('4')">
+                    <div>🔮 Fal Yorumu</div>
+                    <div class="chat-date">1 hafta önce</div>
+                </div>
+            </div>
+        </aside>
     </div>
 
     <!-- 🏆 FEATURES SECTION -->
@@ -733,10 +733,6 @@
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-
-        // ... (Diğer JavaScript fonksiyonları aynı kalacak)
-        // Mevcut tüm JavaScript kodunuz buraya gelecek
-        // Kısaltma için tekrar yazmıyorum, mevcut kodunuz olduğu gibi kalacak
 
         document.addEventListener('DOMContentLoaded', function() {
             // 🎯 DOM ELEMENTLERİ
@@ -919,4 +915,3 @@
     </script>
 </body>
 </html>
-
