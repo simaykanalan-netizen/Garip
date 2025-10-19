@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garip AI - Müslüman Türk Yapay Zeka Asistanı</title>
+    <meta name="description" content="Garip AI - Ücretsiz Türkçe Yapay Zeka Asistanı. Müzik, oyun, film, dini sohbet, fal ve daha fazlası!">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦊</text></svg>">
+
+    <!-- 🌙 STYLE -->
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-accent: #0d1b2a;
+            --bg-card: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --accent-green: #00ff88;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-orange: #f59e0b;
+            --border-color: #475569;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-accent) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* 🎯 HEADER */
+        .header {
+            background: rgba(13, 27, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 0;
+            text-align: center;
+            border-bottom: 3px solid var(--accent-green);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .tagline {
+            color: var(--accent-green);
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+            opacity: 0.8;
+        }
+
+        /* 💬 MAIN CONTAINER */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* 🎨 SIDEBAR */
+        .sidebar {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            height: fit-content;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .sidebar-title {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-green);
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .feature-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            width: 100%;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.8rem;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .feature-btn:hover {
+            background: var(--accent-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        /* 💬 CHAT CONTAINER */
+        .chat-container {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: var(--bg-primary);
+        }
+
+        .message {
+            margin-bottom: 1.2rem;
+            padding: 1rem 1.2rem;
+            border-radius: 18px;
+            max-width: 85%;
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+            margin-left: auto;
+            border-bottom-right-radius: 6px;
+            color: white;
+        }
+
+        .ai-message {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-bottom-left-radius: 6px;
+            color: var(--text-primary);
+        }
+
+        .message-sender {
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            opacity: 0.6;
+            margin-top: 0.3rem;
+        }
+
+        /* 📝 INPUT */
+        .input-container {
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        #userInput {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #userInput:focus {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
+        }
+
+        #sendBtn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--accent-green), #00cc6a);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        #sendBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0, 255, 136, 0.4);
+        }
+
+        /* 🏆 FEATURES */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem auto;
+            max-width: 1200px;
+            padding: 0 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-green);
+        }
+
+        /* 📱 RESPONSIVE */
+        @media (max-width: 968px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .sidebar {
+                order: 2;
+            }
+
+            .chat-container {
+                order: 1;
+                height: 500px;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            #sendBtn {
+                width: 100%;
+            }
+        }
+
+        /* 🎭 ANIMATIONS */
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .typing-indicator {
+            display: inline-flex;
+            gap: 4px;
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border-radius: 18px;
+            border-bottom-left-radius: 6px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-secondary);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        /* 🔗 API STATUS */
+        .api-status {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: var(--accent-green);
+            color: var(--bg-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 🎯 HEADER -->
+    <header class="header">
+        <div class="logo">🦊 Garip AI</div>
+        <div class="subtitle">Müslüman Türk Yapay Zeka Asistanı</div>
+        <div class="tagline">"İyilik yap denize at, balık bilmezse Halik bilir!"</div>
+    </header>
+
+    <!-- 💬 MAIN CONTENT -->
+    <div class="main-container">
+        <!-- 🎨 SIDEBAR -->
+        <aside class="sidebar">
+            <h2 class="sidebar-title">🎯 Özellikler</h2>
+
+            <button class="feature-btn" onclick="showFeature('music')">
+                <span>🎵</span> Müzik & Beste
+            </button>
+
+            <button class="feature-btn" onclick="showFeature('games')">
+                <span>🎮</span> Oyunlar
+            </button>
+
+            <button class="feature-btn" onclick="showFeature('movies')">
+                <span>🎬</span> Film Önerileri
+            </button>
+
+            <button class="feature-btn" onclick="showFeature('islamic')">
+                <span>📿</span> Dini Sohbet
+            </button>
+
+            <button class="feature-btn" onclick="showFeature('turkish')">
+                <span>🇹🇷</span> Türk Kültürü
+            </button>
+
+            <button class="feature-btn" onclick="showFeature('fortune')">
+                <span>🔮</span> Fal & Rüya
+            </button>
+
+            <button class="feature-btn" onclick="showFeature('health')">
+                <span>🩺</span> Sağlık Tavsiyeleri
+            </button>
+
+            <button class="feature-btn" onclick="showFeature('math')">
+                <span>🧮</span> Matematik
+            </button>
+        </aside>
+
+        <!-- 💬 CHAT AREA -->
+        <main class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    <div class="message-sender">🦊 Garip AI</div>
+                    <div>Ve aleyküm selam kanka! 🕌 Ben Garip AI, sana nasıl yardımcı olabilirim?</div>
+                    <div class="message-time" id="currentTime"></div>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <div class="input-group">
+                    <input type="text" id="userInput" placeholder="Mesajınızı yazın... (Enter'a basın)">
+                    <button id="sendBtn">Gönder 🚀</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 🏆 FEATURES SECTION -->
+    <section class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🎵</div>
+            <h3 class="feature-title">Müzik & Beste</h3>
+            <p>Şarkı sözü yazma, melodi önerileri, akor desteği</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🎮</div>
+            <h3 class="feature-title">Oyunlar</h3>
+            <p>Sayı tahmin, trivia, taş-kağıt-makas ve daha fazlası</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">📿</div>
+            <h3 class="feature-title">Dini Rehberlik</h3>
+            <p>İslami bilgiler, dua önerileri, manevi destek</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🔮</div>
+            <h3 class="feature-title">Fal & Rüya</h3>
+            <p>Kahve falı, rüya tabirleri, el falı yorumları</p>
+        </div>
+    </section>
+
+    <!-- 🔗 API STATUS -->
+    <div class="api-status" id="apiStatus">🟢 Çevrimiçi</div>
+
+    <script>
+        // 🎯 DOM ELEMENTLERİ
+        const chatMessages = document.getElementById('chatMessages');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const apiStatus = document.getElementById('apiStatus');
+        const currentTime = document.getElementById('currentTime');
+
+        // ⏰ ZAMAN GÜNCELLE
+        function updateTime() {
+            const now = new Date();
+            currentTime.textContent = now.toLocaleTimeString('tr-TR');
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // 🌐 API BAĞLANTI KONTROLÜ
+        async function checkAPIStatus() {
+            try {
+                const response = await fetch('https://garip-ai.onrender.com/api/health');
+                if (response.ok) {
+                    apiStatus.textContent = '🟢 Çevrimiçi';
+                    apiStatus.style.background = 'var(--accent-green)';
+                } else {
+                    throw new Error('API hatası');
+                }
+            } catch (error) {
+                apiStatus.textContent = '🟡 Yerel Mod';
+                apiStatus.style.background = 'var(--accent-orange)';
+            }
+        }
+
+        // ✉️ MESAJ GÖNDERME
+        async function sendMessage() {
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            addMessage('Sen', message, 'user');
+            userInput.value = '';
+
+            // API'ye mesaj gönder
+            await sendToAPI(message);
+        }
+
+        // 🌐 API'YE MESAJ GÖNDER
+        async function sendToAPI(message) {
+            showTypingIndicator();
+
+            try {
+                const response = await fetch('https://garip-ai.onrender.com/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    removeTypingIndicator();
+                    addMessage('🦊 Garip AI', data.response, 'ai');
+                } else {
+                    throw new Error('API hatası');
+                }
+            } catch (error) {
+                // API çalışmazsa yerel yanıt ver
+                removeTypingIndicator();
+                simulateAIResponse(message);
+            }
+        }
+
+        // 🤖 YEREL YANIT (API ÇALIŞMAZSA)
+        function simulateAIResponse(userMessage) {
+            setTimeout(() => {
+                const response = generateAIResponse(userMessage);
+                addMessage('🦊 Garip AI', response, 'ai');
+            }, 1000);
+        }
+
+        // 🧠 YEREL AI YANIT ÜRETİCİ
+        function generateAIResponse(message) {
+            const lowerMessage = message.toLowerCase();
+
+            const responses = {
+                greeting: [
+                    "Ve aleyküm selam kanka! 🕌 Nasılsın?",
+                    "Hoş geldin canım! 😊 Sana nasıl yardımcı olabilirim?",
+                    "Selamün aleyküm! 🌟 Hayırdır, neler yapıyorsun?"
+                ],
+                howAreYou: [
+                    "Elhamdülillah iyiyim kanka! Sen nasılsın? 💖",
+                    "Şükürler olsun, senden haber? 😊",
+                    "Allah'a şükür iyiyim! Sen söyle nasılsın? 🤲"
+                ],
+                thanks: [
+                    "Estağfurullah kanka! 🤲",
+                    "Rica ederim canım! 💫",
+                    "Ne demek kanka, her zaman! 😊"
+                ],
+                islamic: [
+                    "Allah'ın rahmeti ve bereketi üzerine olsun! 🌙",
+                    "Maşallah, güzel bir konu açtın! 🤲",
+                    "Allah'ın izniyle her şey güzel olacak! 💫"
+                ],
+                music: [
+                    "🎵 Müzik konusunda yardımcı olayım! Hangi tür müzik ile ilgileniyorsun?",
+                    "🎸 Gitar akorları mı lazım? Yoksa şarkı sözü mü yazacaksın?",
+                    "🎶 Müzik teorisi veya beste konusunda rehberlik edebilirim!"
+                ],
+                default: [
+                    "Valla kanka, bu konuda yardımcı olayım! 🦊",
+                    "Allah'ın izniyle, şöyle bir bakalım... 🤲",
+                    "Maşallah, güzel bir soru sordun! 💫",
+                    "Estağfurullah, bu konuda şunu diyeyim... 📚"
+                ]
+            };
+
+            if (/(merhaba|selam|hey|hi|aleyküm)/i.test(lowerMessage)) {
+                return randomChoice(responses.greeting);
+            } else if (/(nasılsın|naber|ne haber)/i.test(lowerMessage)) {
+                return randomChoice(responses.howAreYou);
+            } else if (/(teşekkür|sağol|thanks)/i.test(lowerMessage)) {
+                return randomChoice(responses.thanks);
+            } else if (/(allah|islam|müslüman|namaz|dua)/i.test(lowerMessage)) {
+                return randomChoice(responses.islamic);
+            } else if (/(müzik|şarkı|beste|akor)/i.test(lowerMessage)) {
+                return randomChoice(responses.music);
+            } else {
+                return randomChoice(responses.default);
+            }
+        }
+
+        // 🎨 ÖZELLİK GÖSTERME
+        function showFeature(feature) {
+            const features = {
+                music: "🎵 Müzik ve beste konusunda yardımcı olayım! Hangi tür müzik ile ilgileniyorsun?",
+                games: "🎮 Hadi oyun oynayalım! Sayı tahmin oyunu mu, taş-kağıt-makas mı?",
+                movies: "🎬 Size özel film önerilerim var! Aksiyon, komedi, dram hangisini seversin?",
+                islamic: "📿 Dini konularda rehberlik edeyim! Hangi konuda yardıma ihtiyacın var?",
+                turkish: "🇹🇷 Türk kültürü sohbeti yapalım! Kahve falına ne dersin? ☕",
+                fortune: "🔮 Fal ve rüya tabirleri! Rüyanı anlat, yorumlayayım!",
+                health: "🩺 Sağlık tavsiyeleri! Rahatsızlığın varsa anlat, temel öneriler vereyim!",
+                math: "🧮 Matematik işlemleri! Hesaplama yapmamı istediğin bir şey var mı?"
+            };
+
+            addMessage('🦊 Garip AI', features[feature], 'ai');
+        }
+
+        // 🛠️ YARDIMCI FONKSİYONLAR
+        function addMessage(sender, text, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = message ${type}-message;
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('tr-TR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            messageDiv.innerHTML = `
+                <div class="message-sender">${sender}</div>
+                <div>${text}</div>
+                <div class="message-time">${timeString}</div>
+            `;
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai-message';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="message-sender">🦊 Garip AI</div>
+                <div class="typing-indicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        function randomChoice(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        // 📱 EVENT LISTENERS
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // 🌟 SAYFA YÜKLENİNCE
+        document.addEventListener('DOMContentLoaded', () => {
+            userInput.focus();
+            checkAPIStatus();
+        });
+    </script>
+</body>
+</html>
