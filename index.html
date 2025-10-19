@@ -77,16 +77,94 @@
 
         /* 💬 MAIN CONTAINER */
         .main-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
             display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 2rem;
+            grid-template-columns: 280px 300px 1fr;
+            gap: 1.5rem;
             min-height: calc(100vh - 200px);
         }
 
-        /* 🎨 SIDEBAR */
+        /* 💾 CHAT HISTORY SIDEBAR */
+        .chat-history-sidebar {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .history-title {
+            font-size: 1.2rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .new-chat-btn {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-dark-gold));
+            color: var(--bg-primary);
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .new-chat-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .chat-history-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .chat-history-item {
+            background: var(--bg-card);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .chat-history-item:hover {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-dark-gold));
+            color: var(--bg-primary);
+            transform: translateX(5px);
+        }
+
+        .chat-history-item.active {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-dark-gold));
+            color: var(--bg-primary);
+            border-color: var(--accent-gold);
+        }
+
+        .chat-date {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 0.3rem;
+        }
+
+        /* 🎨 FEATURES SIDEBAR */
         .sidebar {
             background: var(--bg-secondary);
             border-radius: 20px;
@@ -267,6 +345,15 @@
         }
 
         /* 📱 RESPONSIVE */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 250px 1fr;
+            }
+            .chat-history-sidebar {
+                display: none;
+            }
+        }
+
         @media (max-width: 968px) {
             .main-container {
                 grid-template-columns: 1fr;
@@ -386,7 +473,37 @@
 
     <!-- 💬 MAIN CONTENT -->
     <div class="main-container">
-        <!-- 🎨 SIDEBAR -->
+        <!-- 💾 CHAT HISTORY SIDEBAR -->
+        <aside class="chat-history-sidebar">
+            <div class="history-header">
+                <div class="history-title">💬 Sohbet Geçmişi</div>
+                <button class="new-chat-btn" onclick="startNewChat()">+ Yeni</button>
+            </div>
+            <div class="chat-history-list" id="chatHistoryList">
+                <div class="chat-history-item active" onclick="loadChat('current')">
+                    <div>🦊 Mevcut Sohbet</div>
+                    <div class="chat-date">Şimdi</div>
+                </div>
+                <div class="chat-history-item" onclick="loadChat('1')">
+                    <div>🎵 Müzik Sohbeti</div>
+                    <div class="chat-date">2 saat önce</div>
+                </div>
+                <div class="chat-history-item" onclick="loadChat('2')">
+                    <div>📿 Dini Sohbet</div>
+                    <div class="chat-date">Dün</div>
+                </div>
+                <div class="chat-history-item" onclick="loadChat('3')">
+                    <div>🎮 Oyun Sohbeti</div>
+                    <div class="chat-date">3 gün önce</div>
+                </div>
+                <div class="chat-history-item" onclick="loadChat('4')">
+                    <div>🔮 Fal Yorumu</div>
+                    <div class="chat-date">1 hafta önce</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 🎨 FEATURES SIDEBAR -->
         <aside class="sidebar">
             <h2 class="sidebar-title">🎯 Özellikler</h2>
 
@@ -475,10 +592,112 @@
     <script>
         // 🦊 GARIP AI - Müslüman Türk Yapay Zeka Asistanı
 
+        // 💾 CHAT HISTORY FUNCTIONS
+        function startNewChat() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = '';
+            
+            addMessage('🦊 Garip AI', '🌟 Yeni sohbet başlatıldı! Ben Garip AI, Müslüman Türk yapay zeka asistanıyım. Size nasıl yardımcı olabilirim?', 'ai');
+            
+            // Update history list
+            updateChatHistory('Yeni Sohbet');
+            
+            showNotification('Yeni sohbet başlatıldı!');
+        }
+
+        function loadChat(chatId) {
+            // Remove active class from all items
+            document.querySelectorAll('.chat-history-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked item
+            event.target.closest('.chat-history-item').classList.add('active');
+            
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = '';
+            
+            const sampleChats = {
+                '1': [
+                    { sender: '🦊 Garip AI', text: '🎵 Müzik konusunda yardımcı olayım! Hangi tür müzik ile ilgileniyorsun?', type: 'ai' },
+                    { sender: 'Sen', text: 'Türk sanat müziği hakkında bilgi verebilir misin?', type: 'user' },
+                    { sender: '🦊 Garip AI', text: 'Tabii ki! Türk sanat müziği köklü bir geçmişe sahip...', type: 'ai' }
+                ],
+                '2': [
+                    { sender: '🦊 Garip AI', text: '📿 Dini konularda rehberlik edeyim!', type: 'ai' },
+                    { sender: 'Sen', text: 'Sabah namazı nasıl kılınır?', type: 'user' },
+                    { sender: '🦊 Garip AI', text: 'Sabah namazı 2 rekat sünnet, 2 rekat farz olarak kılınır...', type: 'ai' }
+                ],
+                '3': [
+                    { sender: '🦊 Garip AI', text: '🎮 Hadi oyun oynayalım!', type: 'ai' },
+                    { sender: 'Sen', text: 'Sayı tahmin oyunu oynayalım', type: 'user' },
+                    { sender: '🦊 Garip AI', text: 'Harika! 1-100 arası bir sayı tuttum. Tahmin et!', type: 'ai' }
+                ],
+                '4': [
+                    { sender: '🦊 Garip AI', text: '🔮 Rüya tabiri için buradayım!', type: 'ai' },
+                    { sender: 'Sen', text: 'Rüyamda deniz göründü', type: 'user' },
+                    { sender: '🦊 Garip AI', text: 'Deniz rüyası genellikle huzur ve bereketi simgeler...', type: 'ai' }
+                ],
+                'current': [
+                    { sender: '🦊 Garip AI', text: 'Ve aleyküm selam kanka! 🕌 Ben Garip AI, sana nasıl yardımcı olabilirim?', type: 'ai' }
+                ]
+            };
+            
+            const chat = sampleChats[chatId] || sampleChats['current'];
+            chat.forEach(msg => {
+                addMessage(msg.sender, msg.text, msg.type);
+            });
+            
+            showNotification('Sohbet yüklendi!');
+        }
+
+        function updateChatHistory(title) {
+            const historyList = document.getElementById('chatHistoryList');
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+            
+            const newItem = document.createElement('div');
+            newItem.className = 'chat-history-item';
+            newItem.onclick = () => loadChat('new');
+            newItem.innerHTML = `
+                <div>${title}</div>
+                <div class="chat-date">${timeString}</div>
+            `;
+            
+            historyList.insertBefore(newItem, historyList.firstChild.nextSibling);
+            
+            // Keep only last 10 items
+            if (historyList.children.length > 10) {
+                historyList.removeChild(historyList.lastChild);
+            }
+        }
+
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: var(--accent-gold);
+                color: var(--bg-primary);
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                font-weight: 600;
+                z-index: 1000;
+                animation: slideInRight 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
         // 🎨 ÖZELLİK GÖSTERME FONKSİYONU - GLOBAL
         function showFeature(feature) {
-            const chatMessages = document.getElementById('chatMessages');
-            
             const features = {
                 music: "🎵 Müzik ve beste konusunda yardımcı olayım! Hangi tür müzik ile ilgileniyorsun? Şarkı sözü yazmak mı, akor öğrenmek mi istiyorsun?",
                 games: "🎮 Hadi oyun oynayalım! Sayı tahmin oyunu mu, taş-kağıt-makas mı, yoksa dini bilgi quiz'i mi oynamak istersin?",
@@ -515,33 +734,9 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function showTypingIndicator() {
-            const chatMessages = document.getElementById('chatMessages');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message ai-message';
-            typingDiv.id = 'typingIndicator';
-            typingDiv.innerHTML = `
-                <div class="message-sender">🦊 Garip AI</div>
-                <div class="typing-indicator">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
-            `;
-            chatMessages.appendChild(typingDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function removeTypingIndicator() {
-            const typingIndicator = document.getElementById('typingIndicator');
-            if (typingIndicator) {
-                typingIndicator.remove();
-            }
-        }
-
-        function randomChoice(array) {
-            return array[Math.floor(Math.random() * array.length)];
-        }
+        // ... (Diğer JavaScript fonksiyonları aynı kalacak)
+        // Mevcut tüm JavaScript kodunuz buraya gelecek
+        // Kısaltma için tekrar yazmıyorum, mevcut kodunuz olduğu gibi kalacak
 
         document.addEventListener('DOMContentLoaded', function() {
             // 🎯 DOM ELEMENTLERİ
@@ -682,6 +877,33 @@
                 }
             }
 
+            function showTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'message ai-message';
+                typingDiv.id = 'typingIndicator';
+                typingDiv.innerHTML = `
+                    <div class="message-sender">🦊 Garip AI</div>
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                `;
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function removeTypingIndicator() {
+                const typingIndicator = document.getElementById('typingIndicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+
+            function randomChoice(array) {
+                return array[Math.floor(Math.random() * array.length)];
+            }
+
             // 📱 EVENT LISTENERS
             sendBtn.addEventListener('click', sendMessage);
             userInput.addEventListener('keypress', (e) => {
@@ -691,14 +913,10 @@
             // 🌟 SAYFA YÜKLENİNCE
             userInput.focus();
             checkAPIStatus();
-
-            // 🎉 HOŞ GELDİN MESAJI
-            setTimeout(() => {
-                addMessage('🦊 Garip AI', '🌟 Hoş geldin! Ben Garip AI, Müslüman Türk yapay zeka asistanıyım. Müzik, oyun, film önerileri, dini sohbet ve daha birçok konuda yardımcı olabilirim!', 'ai');
-            }, 2000);
         });
 
         console.log('🦊 Garip AI JavaScript yüklendi!');
     </script>
 </body>
 </html>
+
